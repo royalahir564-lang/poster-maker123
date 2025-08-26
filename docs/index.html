@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🙏 Ganesh Chaturthi Poster Maker 🙏</title>
+  <style>
+    body { text-align: center; font-family: Arial, sans-serif; }
+    canvas { border: 1px solid #ccc; margin-top: 10px; max-width: 100%; }
+  </style>
+</head>
+<body>
+  <h2>🙏 Ganesh Chaturthi Poster Maker 🙏</h2>
+
+  <input type="text" id="nameInput" placeholder="Apna Naam Likho">
+  <br><br>
+  <input type="file" id="uploadImage" accept="image/*">
+  <br><br>
+  <canvas id="posterCanvas" width="500" height="600"></canvas>
+  <br>
+  <button onclick="addName()">Naam Add Karo</button>
+  <button onclick="downloadPoster()">Download Poster</button>
+
+  <script>
+    let canvas = document.getElementById("posterCanvas");
+    let ctx = canvas.getContext("2d");
+
+    // 🎉 Poster Background
+    let poster = new Image();
+    poster.src = "20250827_025830.png";  // yahi teri image ka naam hai
+    poster.onload = function() {
+      ctx.drawImage(poster, 0, 0, canvas.width, canvas.height);
+    };
+
+    // 🖊 Naam add karne ka function
+    function addName() {
+      ctx.drawImage(poster, 0, 0, canvas.width, canvas.height);
+      let name = document.getElementById("nameInput").value;
+      ctx.font = "30px Arial";
+      ctx.fillStyle = "white";
+      ctx.textAlign = "center";
+      ctx.fillText(name, canvas.width/2, canvas.height - 50);
+    }
+
+    // 📷 Photo Upload
+    document.getElementById("uploadImage").addEventListener("change", function(e) {
+      let reader = new FileReader();
+      reader.onload = function(event) {
+        let img = new Image();
+        img.src = event.target.result;
+        img.onload = function() {
+          ctx.drawImage(poster, 0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 180, 350, 150, 150); // photo position
+        };
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    // ⬇ Download button
+    function downloadPoster() {
+      let link = document.createElement('a');
+      link.download = 'ganesh_chaturthi_poster.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  </script>
+</body>
+</html>
